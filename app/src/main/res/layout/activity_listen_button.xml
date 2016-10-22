@@ -24,4 +24,25 @@
         app:mfl_repeat="4"
     />
 
+    <Button
+        android:id="@+id/testStopButton"
+        android:text="stop"
+        android:textSize="20pt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/testStartButton"
+        android:layout_toEndOf="@+id/listenButton"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="21dp" />
+
+    <Button
+        android:id="@+id/testStartButton"
+        android:text="start"
+        android:textSize="20pt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/testStopButton" />
+
 </RelativeLayout>
