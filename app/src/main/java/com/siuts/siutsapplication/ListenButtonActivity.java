@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.siuts.siutsapplication.domain.Constants;
 
@@ -23,8 +22,6 @@ import java.io.IOException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.saeid.fabloading.LoadingView;
-
-import static android.webkit.ConsoleMessage.MessageLevel.LOG;
 
 
 public class ListenButtonActivity extends AppCompatActivity {
@@ -52,10 +49,14 @@ public class ListenButtonActivity extends AppCompatActivity {
             stopRecording();
         });
 
-        listenButton.addAnimation(0x64B5F6, R.drawable.emberiza_citrinella, LoadingView.FROM_LEFT);
+        listenButton.addAnimation(0x64B5F6, R.drawable.fringilla_coelebs, LoadingView.FROM_LEFT);
         listenButton.addAnimation(0x64B5ff, R.drawable.apus_apus, LoadingView.FROM_BOTTOM);
         listenButton.addAnimation(0x64B500, R.drawable.chloris_chloris, LoadingView.FROM_TOP);
         listenButton.addAnimation(0x64B5F6, R.drawable.fab_shadow, LoadingView.FROM_RIGHT);
+
+        listenButton.setOnClickListener((View v) -> {
+            listenButton.startAnimation();
+        });
 
     }
 
