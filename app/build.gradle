@@ -5,7 +5,7 @@ android {
     buildToolsVersion "24.0.1"
     defaultConfig {
         applicationId "com.siuts.siutsapplication"
-        minSdkVersion 19
+        minSdkVersion 23
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
@@ -53,4 +53,5 @@ dependencies {
     compile 'io.saeid:fab-loading:1.0.0'
     compile 'commons-io:commons-io:+'
     compile 'com.skyfishjy.ripplebackground:library:1.0.1'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
 }
