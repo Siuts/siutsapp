@@ -1,4 +1,4 @@
-package com.siuts.siutsapplication;
+package com.siuts.siutsapplication.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.siuts.siutsapplication.R;
 
 public class ListViewItem extends LinearLayout {
     protected TextView birdNameTextView;

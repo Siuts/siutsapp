@@ -4,8 +4,8 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <!-- Dimensions for list_view_item -->
-    <dimen name="list_item_height">80dp</dimen>
-    <dimen name="list_item_image_size">60dp</dimen>
+    <dimen name="list_item_height">160dp</dimen>
+    <dimen name="list_item_image_size">160dp</dimen>
     <dimen name="list_item_confidence_text_size">24pt</dimen>
 
 </resources>

@@ -1,4 +1,4 @@
-package com.siuts.siutsapplication;
+package com.siuts.siutsapplication.common;
 
 public enum Birds {
     PARUS_MAJOR,

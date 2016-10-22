@@ -1,5 +1,7 @@
-package com.siuts.siutsapplication;
+package com.siuts.siutsapplication.common;
 
+
+import com.siuts.siutsapplication.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;

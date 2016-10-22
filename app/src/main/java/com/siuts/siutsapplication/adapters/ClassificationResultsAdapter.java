@@ -1,12 +1,14 @@
-package com.siuts.siutsapplication;
+package com.siuts.siutsapplication.adapters;
 
 
 import android.app.Activity;
 import android.database.DataSetObserver;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ListAdapter;
+
+import com.siuts.siutsapplication.views.ListViewItem;
+import com.siuts.siutsapplication.R;
 
 import java.util.ArrayList;
 import java.util.List;
