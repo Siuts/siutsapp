@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 
-import com.siuts.siutsapplication.common.BirdData;
-import com.siuts.siutsapplication.common.ClassifiedBird;
+import com.siuts.siutsapplication.domain.BirdData;
+import com.siuts.siutsapplication.domain.ClassifiedBird;
 import com.siuts.siutsapplication.views.ListViewItem;
 import com.siuts.siutsapplication.R;
 
@@ -66,8 +66,8 @@ public class ClassificationResultsAdapter implements ListAdapter {
             view = new ListViewItem(activity, activity.getResources().getLayout(R.layout.list_view_item));
         }
         ClassifiedBird bird = (ClassifiedBird)getItem(idx);
-        view.setName(bird.getName_en());
-        view.setAltName(bird.getName_et());
+        view.setName(bird.getNameEn());
+        view.setAltName(bird.getNameEt());
         view.setConfidence(bird.getConfidence());
         String slug = bird.getSlug();
         if (BirdData.slugImages.containsKey(slug)) {
