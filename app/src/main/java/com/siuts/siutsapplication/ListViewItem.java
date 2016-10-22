@@ -30,9 +30,6 @@ public class ListViewItem extends LinearLayout {
         }
     }
 
-    /**
-     * Override this method to inflate layouts in subclasses.
-     */
     protected void inflateLayout(Context context) {
         LayoutInflater.from(context).inflate(R.layout.list_view_item, this);
     }
