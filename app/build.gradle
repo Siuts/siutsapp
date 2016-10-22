@@ -50,4 +50,5 @@ dependencies {
     compile('io.github.openfeign:feign-jackson:9.0.0')
     compile('io.github.openfeign.form:feign-form:2.0.2')
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'io.saeid:fab-loading:1.0.0'
 }
