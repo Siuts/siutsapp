@@ -1,0 +1,8 @@
+<resources>
+    <declare-styleable name="ListViewItem">
+        <attr name="birdName" format="string" />
+        <attr name="altBirdName" format="string" />
+        <attr name="confidence" format="string" />
+        <attr name="image" format="reference" />
+    </declare-styleable>
+</resources>
