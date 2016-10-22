@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:scaleX="5"
         android:scaleY="5"
-        app:mfl_onclickLoading="true"
+        app:mfl_onclickLoading="false"
         app:mfl_duration="500"
         app:mfl_repeat="10"
         android:layout_centerVertical="true"
