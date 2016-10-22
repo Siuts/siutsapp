@@ -13,16 +13,19 @@ import com.siuts.siutsapplication.domain.Constants;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class ClassificationResultsActivity extends AppCompatActivity {
 
-    ListView listView;
+    @BindView(R.id.birdListView) ListView listView;
     ClassificationResultsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_classification_results);
-        listView = (ListView) findViewById(R.id.birdListView);
+        ButterKnife.bind(this);
 
         Intent intent = getIntent();
         List<ClassifiedBird> birds = null;
