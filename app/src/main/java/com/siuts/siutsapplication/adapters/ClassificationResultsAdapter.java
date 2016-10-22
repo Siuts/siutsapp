@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 
+import com.siuts.siutsapplication.common.BirdData;
+import com.siuts.siutsapplication.common.ClassifiedBird;
 import com.siuts.siutsapplication.views.ListViewItem;
 import com.siuts.siutsapplication.R;
 
@@ -17,11 +19,12 @@ public class ClassificationResultsAdapter implements ListAdapter {
 
     protected Activity activity;
     protected List<DataSetObserver> dataSetObserverList;
+    protected List<ClassifiedBird> birds;
 
-
-    public ClassificationResultsAdapter(final Activity activity) {
+    public ClassificationResultsAdapter(final Activity activity, List<ClassifiedBird> birds) {
         this.activity = activity;
         dataSetObserverList = new ArrayList<>();
+        this.birds = birds;
     }
 
     @Override
@@ -36,17 +39,17 @@ public class ClassificationResultsAdapter implements ListAdapter {
 
     @Override
     public int getCount() {
-        return 5;
+        return birds.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return null;
+        return birds.get(i);
     }
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return i;
     }
 
     @Override
@@ -55,12 +58,22 @@ public class ClassificationResultsAdapter implements ListAdapter {
     }
 
     @Override
-    public View getView(int i, View convertView, ViewGroup viewGroup) {
+    public View getView(int idx, View convertView, ViewGroup viewGroup) {
         final ListViewItem view;
         if (convertView != null) {
             view = (ListViewItem) convertView;
         } else {
             view = new ListViewItem(activity, activity.getResources().getLayout(R.layout.list_view_item));
+        }
+        ClassifiedBird bird = (ClassifiedBird)getItem(idx);
+        view.setName(bird.getName_en());
+        view.setAltName(bird.getName_et());
+        view.setConfidence(bird.getConfidence());
+        String slug = bird.getSlug();
+        if (BirdData.slugImages.containsKey(slug)) {
+            view.setImage(BirdData.slugImages.get(slug));
+        } else {
+            view.setImage(R.drawable.bird_placeholder);
         }
         return view;
     }
@@ -77,7 +90,7 @@ public class ClassificationResultsAdapter implements ListAdapter {
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return birds.size() == 0;
     }
 
     @Override

@@ -11,10 +11,10 @@ import java.util.Map;
 
 public class BirdData {
 
-    static Map<Birds, Integer> birdImages = getImages();
-    static Map<Birds, String> birdSlugs = getSlugs();
-    static Map<String, Integer> slugImages = getSlugImages();
-    static List<String> slugs = new ArrayList<>(getSlugs().values());
+    public static Map<Birds, Integer> birdImages = getImages();
+    public static Map<Birds, String> birdSlugs = getSlugs();
+    public static Map<String, Integer> slugImages = getSlugImages();
+    public static List<String> slugs = new ArrayList<>(getSlugs().values());
 
     static protected Map<Birds, String> getSlugs() {
         Map<Birds, String> images = new HashMap<>();
