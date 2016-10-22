@@ -11,11 +11,14 @@ import android.widget.TextView;
 import com.siuts.siutsapplication.R;
 import com.squareup.picasso.Picasso;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class ListViewItem extends LinearLayout {
-    protected TextView birdNameTextView;
-    protected TextView altNameTextView;
-    protected TextView confidenceTextView;
-    protected ImageView image;
+    @BindView(R.id.birdNameTextView) TextView birdNameTextView;
+    @BindView(R.id.birdNameAlternativeName) TextView altNameTextView;
+    @BindView(R.id.confidenceTextView) TextView confidenceTextView;
+    @BindView(R.id.birdImageView) protected ImageView image;
 
     public ListViewItem(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -24,13 +27,7 @@ public class ListViewItem extends LinearLayout {
 
     protected void initialize(Context context, AttributeSet attrs, boolean useDefaultImage) {
         inflateLayout(context);
-
-        birdNameTextView = (TextView) findViewById(R.id.birdNameTextView);
-        altNameTextView = (TextView) findViewById(R.id.birdNameAlternativeName);
-        confidenceTextView = (TextView) findViewById(R.id.confidenceTextView);
-        image = (ImageView) findViewById(R.id.birdImageView);
-
-        image = (ImageView) findViewById(R.id.birdImageView);
+        ButterKnife.bind(this);
         if (!useDefaultImage) {
             image.setImageBitmap(null);
         }
