@@ -58,10 +58,9 @@ public class ListenButtonActivity extends AppCompatActivity {
             stopRecording();
         });
 
-        listenButton.addAnimation(0x64B5F6, R.drawable.fringilla_coelebs, LoadingView.FROM_LEFT);
-        listenButton.addAnimation(0x64B5ff, R.drawable.apus_apus, LoadingView.FROM_BOTTOM);
-        listenButton.addAnimation(0x64B500, R.drawable.chloris_chloris, LoadingView.FROM_TOP);
-        listenButton.addAnimation(0x64B5F6, R.drawable.fab_shadow, LoadingView.FROM_RIGHT);
+//        listenButton.addAnimation(0x64B5F6, R.drawable.canary_with_microphone, LoadingView.FROM_LEFT);
+//        listenButton.addAnimation(0x64B5ff, R.drawable.canary_confused_1, LoadingView.FROM_TOP);
+//        listenButton.addAnimation(0x64B500, R.drawable.canary_music_symbol_1, LoadingView.FROM_BOTTOM);
 
         listenButton.setOnClickListener((View v) -> {
             listenButton.startAnimation();

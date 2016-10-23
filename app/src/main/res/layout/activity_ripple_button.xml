@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_ripple_button"
     android:layout_width="match_parent"
@@ -15,18 +16,36 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/content"
+        android:id="@+id/slowRipple"
         app:rb_color="#0099CC"
         app:rb_radius="32dp"
-        app:rb_rippleAmount="4"
-        app:rb_duration="3000"
+        app:rb_rippleAmount="2"
+        app:rb_duration="5000"
         app:rb_scale="6">
-        <ImageView
-            android:layout_width="200dp"
-            android:layout_centerInParent="true"
-            android:id="@+id/rippleImage"
-            android:src="@drawable/fringilla_coelebs"
-            android:layout_height="200dp" />
+
+        <com.skyfishjy.library.RippleBackground
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/fastRipple"
+            app:rb_color="#0099CC"
+            app:rb_radius="32dp"
+            app:rb_rippleAmount="7"
+            app:rb_duration="3000"
+            app:rb_scale="6">
+
+            <io.saeid.fabloading.LoadingView
+                android:id="@+id/recordButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleX="5"
+                android:scaleY="5"
+                app:mfl_onclickLoading="false"
+                app:mfl_duration="500"
+                app:mfl_repeat="30"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
+        </com.skyfishjy.library.RippleBackground>
+
     </com.skyfishjy.library.RippleBackground>
 
 </RelativeLayout>

@@ -2,36 +2,42 @@ package com.siuts.siutsapplication;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ImageView;
 
 import com.skyfishjy.library.RippleBackground;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.saeid.fabloading.LoadingView;
 
 public class RippleButtonActivity extends AppCompatActivity {
 
-    @BindView(R.id.content) RippleBackground rippleBackground;
-    @BindView(R.id.rippleImage) ImageView rippleImage;
-    Boolean isCurrentlyRippling = false;
+    @BindView(R.id.slowRipple) RippleBackground slowRipple;
+    @BindView(R.id.fastRipple) RippleBackground fastRipple;
+    @BindView(R.id.recordButton) LoadingView recordButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ripple_button);
         ButterKnife.bind(this);
+        setupRecordButtonAnimation();
+
+        slowRipple.startRippleAnimation();
     }
 
-    @OnClick(R.id.rippleImage)
-    public void pressRippleImage() {
-        if (isCurrentlyRippling) {
-            rippleBackground.stopRippleAnimation();
-            isCurrentlyRippling = false;
-        } else {
-            rippleBackground.startRippleAnimation();
-            isCurrentlyRippling = true;
-        }
+    private void setupRecordButtonAnimation() {
+        recordButton.addAnimation(0x64B5F6, R.drawable.canary_with_mic, LoadingView.FROM_LEFT);
+        recordButton.addAnimation(0x64B5ff, R.drawable.canary_confused, LoadingView.FROM_TOP);
+        recordButton.addAnimation(0x64B5F6, R.drawable.canary_with_mic, LoadingView.FROM_RIGHT);
+        recordButton.addAnimation(0x64B500, R.drawable.canary_music_symbol, LoadingView.FROM_BOTTOM);
+    }
+
+    @OnClick(R.id.recordButton)
+    public void pressRecordButton() {
+        slowRipple.stopRippleAnimation();
+        fastRipple.startRippleAnimation();
+        recordButton.startAnimation();
     }
 
 }
