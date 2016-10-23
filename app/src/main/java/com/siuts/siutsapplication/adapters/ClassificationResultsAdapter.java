@@ -67,7 +67,7 @@ public class ClassificationResultsAdapter implements ListAdapter {
         }
         ClassifiedBird bird = (ClassifiedBird)getItem(idx);
         view.setName(bird.getNameEn());
-        view.setAltName(bird.getNameEt());
+        view.setAltName(bird.getNameLa());
         view.setConfidence(bird.getConfidence());
         String slug = bird.getSlug();
         if (BirdData.slugImages.containsKey(slug)) {

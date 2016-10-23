@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ListView;
 
 import com.siuts.siutsapplication.adapters.ClassificationResultsAdapter;
@@ -25,11 +27,13 @@ public class ClassificationResultsActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_classification_results);
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
         List<ClassifiedBird> birds = null;
+
         if (intent == null || !intent.hasExtra(Constants.INTENT_EXTRA_CLASSIFICATION_RESULTS)) {
             birds = getDemoResults();
         } else {
@@ -45,8 +49,8 @@ public class ClassificationResultsActivity extends Activity {
 
     List<ClassifiedBird> getDemoResults() {
         List<ClassifiedBird> birds = new ArrayList<>();
-        for (String slug : BirdData.slugs) {
-            birds.add(new ClassifiedBird((slug)));
+        for (int i = 0; i < 3; i++) {
+            birds.add(new ClassifiedBird((BirdData.slugs.toArray()[i].toString())));
         }
         return birds;
     }
