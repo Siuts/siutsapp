@@ -9,7 +9,10 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.siuts.siutsapplication.RippleButtonActivity">
+    tools:context="com.siuts.siutsapplication.RippleButtonActivity"
+    android:background="@android:color/holo_green_light"
+    android:padding="0dp"
+    android:layout_margin="0dp">
 
     <com.skyfishjy.library.RippleBackground
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -19,9 +22,11 @@
         android:id="@+id/slowRipple"
         app:rb_color="#0099CC"
         app:rb_radius="32dp"
-        app:rb_rippleAmount="2"
-        app:rb_duration="5000"
-        app:rb_scale="6">
+        app:rb_rippleAmount="3"
+        app:rb_duration="4000"
+        app:rb_scale="6"
+        android:padding="0dp"
+        android:layout_margin="0dp">
 
         <com.skyfishjy.library.RippleBackground
             android:layout_width="match_parent"
@@ -31,17 +36,19 @@
             app:rb_radius="32dp"
             app:rb_rippleAmount="7"
             app:rb_duration="3000"
-            app:rb_scale="6">
+            app:rb_scale="6"
+            android:padding="0dp"
+            android:layout_margin="0dp">
 
             <io.saeid.fabloading.LoadingView
                 android:id="@+id/recordButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:scaleX="5"
-                android:scaleY="5"
+                android:scaleX="4"
+                android:scaleY="4"
                 app:mfl_onclickLoading="false"
-                app:mfl_duration="500"
-                app:mfl_repeat="30"
+                app:mfl_duration="1600"
+                app:mfl_repeat="50"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true" />
         </com.skyfishjy.library.RippleBackground>

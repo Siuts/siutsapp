@@ -1,7 +1,7 @@
 package com.siuts.siutsapplication;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import com.skyfishjy.library.RippleBackground;
 
@@ -10,7 +10,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.saeid.fabloading.LoadingView;
 
-public class RippleButtonActivity extends AppCompatActivity {
+public class RippleButtonActivity extends Activity {
 
     @BindView(R.id.slowRipple) RippleBackground slowRipple;
     @BindView(R.id.fastRipple) RippleBackground fastRipple;
