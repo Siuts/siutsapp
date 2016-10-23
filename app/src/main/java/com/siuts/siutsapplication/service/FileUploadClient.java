@@ -11,7 +11,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Part;
 
 
-public interface FileUploadService {
+public interface FileUploadClient {
     @Multipart
     @POST(Endpoints.UPLOAD)
     Call<ResponseBody> upload(@Part("description") RequestBody description,

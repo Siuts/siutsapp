@@ -4,7 +4,7 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ServiceGenerator {
+public class ClientGenerator {
 
     public static final String API_BASE_URL = "http://your.api-base.url";
 

@@ -13,8 +13,8 @@ import android.view.View;
 import android.widget.Button;
 
 import com.siuts.siutsapplication.domain.Constants;
-import com.siuts.siutsapplication.service.FileUploadService;
-import com.siuts.siutsapplication.service.ServiceGenerator;
+import com.siuts.siutsapplication.service.FileUploadClient;
+import com.siuts.siutsapplication.service.ClientGenerator;
 
 import org.apache.commons.io.FileUtils;
 
@@ -33,7 +33,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class ListenButtonActivity extends AppCompatActivity {
+public class ListenButtonDeprecatedActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 29;
     public static final String TAG = "MYTAG";
 
@@ -46,7 +46,7 @@ public class ListenButtonActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_listen_button);
+        setContentView(R.layout.activity_listen_button_deprecated);
         ButterKnife.bind(this);
         checkPermissions();
 
@@ -76,7 +76,6 @@ public class ListenButtonActivity extends AppCompatActivity {
                     MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
         }
     }
-
 
     @Override
     public void onStop() {
@@ -152,7 +151,7 @@ public class ListenButtonActivity extends AppCompatActivity {
     public void uploadAudio(String audioFilePath) {
         // TODO: clean up stuff and adjust it to our use case
         // create upload service client
-        FileUploadService service = ServiceGenerator.createService(FileUploadService.class);
+        FileUploadClient service = ClientGenerator.createService(FileUploadClient.class);
 
         // https://github.com/iPaulPro/aFileChooser/blob/master/aFileChooser/src/com/ipaulpro/afilechooser/utils/FileUtils.java
         // use the FileUtils to get the actual file by uri
