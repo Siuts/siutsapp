@@ -73,6 +73,12 @@ public class BirdRecorderActivity extends Activity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        state = RecordingState.NOT_RECORDING;
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         if (state == RecordingState.RECORDING) {

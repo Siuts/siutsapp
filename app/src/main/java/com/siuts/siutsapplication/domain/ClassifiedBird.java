@@ -2,6 +2,7 @@ package com.siuts.siutsapplication.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
@@ -28,6 +29,7 @@ public class ClassifiedBird implements Serializable {
 
     @JsonProperty("description_la")
     private String descriptionLa;
+
     private String confidence;
 
     public ClassifiedBird() {}
