@@ -36,9 +36,9 @@ public class ClassifiedBird implements Serializable {
     {
         this.slug = slug;
         this.name = slug;
-        this.nameEn = slug + " name english";
-        this.nameEt = slug + " name estonian";
-        confidence = String.valueOf(Math.round(Math.random()*100));
+        this.nameEn = "Great Tit";
+        this.nameLa = "Parus Major";
+        this.confidence = String.valueOf(Math.round(Math.random()*100));
     }
 
     public String getSlug() {

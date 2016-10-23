@@ -10,9 +10,11 @@ import android.widget.TextView;
 
 import com.siuts.siutsapplication.R;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 public class ListViewItem extends LinearLayout {
     @BindView(R.id.birdNameTextView) TextView birdNameTextView;
@@ -46,15 +48,17 @@ public class ListViewItem extends LinearLayout {
     }
 
     public void setConfidence(String confidence) {
-        String concatenated = confidence + " %";
+        String concatenated = confidence + "%";
         confidenceTextView.setText(concatenated);
     }
 
     public void setImage(int resourceId) {
+        final Transformation transformation = new RoundedCornersTransformation(20, 20);
         Picasso.with(getContext())
                 .load(resourceId)
                 .fit()
                 .centerCrop()
+                .transform(transformation)
                 .into(image);
     }
 }

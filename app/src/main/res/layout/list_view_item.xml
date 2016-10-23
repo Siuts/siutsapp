@@ -3,43 +3,58 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:weightSum="1"
+    android:background="#bdbdbd"
+    android:layout_margin="0dp"
+    android:layout_alignParentLeft="true"
+    android:layout_marginRight="5dip"
+    android:padding="3dip"    >
 
     <ImageView
-        android:layout_width="@dimen/list_item_image_size"
-        android:layout_height="@dimen/list_item_image_size"
         android:id="@+id/birdImageView"
-        android:src="@drawable/bird_placeholder" />
+        android:src="@drawable/bird_placeholder"
+        android:layout_width="130dp"
+        android:layout_height="146dp"
+        android:layout_weight="0.19" />
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="158dp"
+        android:layout_height="match_parent">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@android:color/black"
             android:text="Bird name"
-            android:id="@+id/birdNameTextView" />
+            android:id="@+id/birdNameTextView"
+            android:textSize="30sp"
+            android:gravity="left|center_vertical"
+            android:textAppearance="@android:style/TextAppearance.Material.Title"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@android:color/background_dark"
+            android:textAppearance="@android:style/TextAppearance.Material.Subhead"
             android:text="Bird name in Estonian"
-            android:id="@+id/birdNameAlternativeName" />
+            android:textSize="20sp"
+            android:textStyle="italic"
+            android:gravity="left|center_vertical"
+            android:id="@+id/birdNameAlternativeName"/>
 
     </LinearLayout>
 
-
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="34dp"
+        android:layout_height="match_parent"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="@dimen/list_item_confidence_text_size"
-        android:text="100 %"
-        android:id="@+id/confidenceTextView" />
-
+        android:text="100%"
+        android:gravity="left|center_vertical"
+        android:textColor="@android:color/black"
+        android:id="@+id/confidenceTextView"
+        android:layout_weight="1.33" />
 
 </LinearLayout>
