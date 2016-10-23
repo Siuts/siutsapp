@@ -7,11 +7,14 @@ import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.siuts.siutsapplication.domain.Constants;
+import com.siuts.siutsapplication.domain.RecordingState;
 import com.siuts.siutsapplication.service.ClientGenerator;
 import com.siuts.siutsapplication.service.FileUploadClient;
 import com.skyfishjy.library.RippleBackground;
@@ -46,7 +49,7 @@ public class BirdRecorderActivity extends Activity {
 
     private MediaRecorder mRecorder = null;
     private MediaPlayer mPlayer = null;
-    Boolean isRecordingNow = false;
+    RecordingState state = RecordingState.NOT_RECORDING;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,19 +63,57 @@ public class BirdRecorderActivity extends Activity {
         slowRipple.startRippleAnimation();
     }
 
+    @Override
+    protected void onStop() {
+        if (state == RecordingState.RECORDING) {
+            stopRecording();
+        }
+        state = RecordingState.NOT_RECORDING;
+    }
+
     @OnClick(R.id.recordButton)
     public void pressRecordButton() {
-        if (!isRecordingNow) {
-            slowRipple.stopRippleAnimation();
-            fastRipple.startRippleAnimation();
-            recordButton.startAnimation();
+        if (state == RecordingState.NOT_RECORDING) {
+            enterRecordingState();
+        }
+    }
 
-            isRecordingNow = true;
-            recordButtonText.setText("Listening to a bird...");
-            startRecording();
+    private void enterRecordingState() {
+        startAnimations();
+        state = RecordingState.RECORDING;
+        recordButtonText.setText("Listening to a bird...");
+        startRecording();
+        createStopRecordingTimer();
+    }
+
+    private void startAnimations() {
+        slowRipple.stopRippleAnimation();
+        fastRipple.startRippleAnimation();
+        recordButton.startAnimation();
+    }
+
+    private void stopAnimations() {
+        slowRipple.startRippleAnimation();
+        fastRipple.stopRippleAnimation();
+        recordButton.pauseAnimation();
+    }
+
+    private void createStopRecordingTimer() {
+        Handler handler = new Handler();
+        Runnable runnable = () -> enterUploadState();
+        handler.postDelayed(runnable, Constants.RECORDING_LENGTH);
+    }
+
+    private void enterUploadState() {
+        if (stopRecording()) {
+            Toast.makeText(this, "Success!!", Toast.LENGTH_SHORT).show();
+            state = RecordingState.UPLOADING;
+            recordButtonText.setText("Uploading ..");
+            uploadAudio(getTemporaryAudioFile().getPath());
         } else {
-            stopRecording();
-            isRecordingNow = false;
+            state = RecordingState.FAILED;
+            stopAnimations();
+            Toast.makeText(this, "Recording failed! :(", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -80,7 +121,12 @@ public class BirdRecorderActivity extends Activity {
     void checkPermissions() {
         // http://stackoverflow.com/questions/3782786/android-mediarecorder-setaudiosource-failed
         if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO},
+            requestPermissions(new String[]{
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.RECORD_AUDIO,
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.INTERNET
+            },
                     MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
         }
     }
@@ -117,6 +163,7 @@ public class BirdRecorderActivity extends Activity {
         }
     }
 
+
     public File getTemporaryAudioFile() {
         return new File(getStorageFolder(), Constants.TEMPORARY_AUDIO_FILE_NAME);
     }
@@ -151,20 +198,19 @@ public class BirdRecorderActivity extends Activity {
         Log.d(TAG, String.format("Recording status " + result));
 
         // play test
-        try {
+        /*try {
             mPlayer = new MediaPlayer();
             mPlayer.setDataSource(getTemporaryAudioFile().getAbsolutePath());
             mPlayer.prepare();
             mPlayer.start();
         } catch (IOException e) {
             Log.e(TAG, e.getMessage());
-        }
+        }*/
         return result;
     }
 
     // https://futurestud.io/tutorials/retrofit-2-how-to-upload-files-to-server
     public void uploadAudio(String audioFilePath) {
-        // TODO: clean up stuff and adjust it to our use case
         // create upload service client
         FileUploadClient service = ClientGenerator.createService(FileUploadClient.class);
 
@@ -173,31 +219,36 @@ public class BirdRecorderActivity extends Activity {
         File file = FileUtils.getFile(audioFilePath);
 
         // create RequestBody instance from file
-        RequestBody requestFile =
-                RequestBody.create(MediaType.parse("multipart/form-data"), file);
-
-        // MultipartBody.Part is used to send also the actual file name
-        MultipartBody.Part body =
-                MultipartBody.Part.createFormData("picture", file.getName(), requestFile);
-
-        // add another part within the multipart request
-        String descriptionString = "hello, this is description speaking";
-        RequestBody description =
-                RequestBody.create(
-                        MediaType.parse("multipart/form-data"), descriptionString);
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("audio_data", file.getName(), requestFile);
 
         // finally, execute the request
-        Call<ResponseBody> call = service.upload(description, body);
+        Call<ResponseBody> call = service.upload(body);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<ResponseBody> call,
-                                   Response<ResponseBody> response) {
-                Log.v("Upload", "success");
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Log.v("UPLOAD", String.format("Response code: %d", response.code()));
+                Log.v("UPLOAD", response.message());
+                if (response.code() == 200) {
+                    try {
+                        String responseString = response.body().string();
+                        Log.v("UPLOAD", responseString);
+                    } catch (IOException exc) {
+                        Log.e("ERROR", exc.getMessage());
+                    }
+                } else {
+                    Toast.makeText(BirdRecorderActivity.this, "Bad request!", Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.e("Upload error:", t.getMessage());
+                Toast.makeText(BirdRecorderActivity.this, "Upload failure!", Toast.LENGTH_LONG).show();
+                Log.v("Upload", "failure");
+                Log.e("UPLOAD", t.getMessage());
+
+                BirdRecorderActivity.this.state = RecordingState.NOT_RECORDING;
+                stopAnimations();
             }
         });
     }
