@@ -150,28 +150,42 @@ public class BirdRecorderActivity extends Activity {
                 .build();
         RequestIdPollService service = retrofit.create(RequestIdPollService.class);
 
+        Intent intent = new Intent(this, ClassificationResultsActivity.class);
+        //intent.putExtra(Constants.INTENT_EXTRA_CLASSIFICATION_RESULTS, response.body());
+        startActivity(intent);
+        return;
+        /*
         Runnable responsePoller = () -> {
             try {
+                Intent intent = new Intent(this, ClassificationResultsActivity.class);
+                //intent.putExtra(Constants.INTENT_EXTRA_CLASSIFICATION_RESULTS, response.body());
+                startActivity(intent);
+                return;
+
                 for (int retryNumber=0 ; retryNumber<Constants.MAX_POLL_RETRIES ; ++retryNumber) {
                     Call<ArrayList<ClassifiedBird>> call = service.getClassifiedBirds(previousRequestId);
                     Response<ArrayList<ClassifiedBird>> response = call.execute();
                     if (response.code() == 200) {
                         Log.e("UPLOAD", "SUCCESS!!!");
-                        Intent intent = new Intent(this, ClassificationResultsActivity.class);
-                        intent.putExtra(Constants.INTENT_EXTRA_CLASSIFICATION_RESULTS, response.body());
-                        startActivity(intent);
+                        //Intent intent = new Intent(this, ClassificationResultsActivity.class);
+                        //intent.putExtra(Constants.INTENT_EXTRA_CLASSIFICATION_RESULTS, response.body());
+                        //startActivity(intent);
                         return;
                     } else {
                         Log.e("UPLOAD", "sleeping");
                         Thread.sleep(Constants.POLL_INTERVAL);
                     }
                 }
+                // TODO: backup
+                //Intent intent = new Intent(BirdRecorderActivity.this, ClassificationResultsActivity.class);
+                //startActivity(intent);
             } catch (IOException | InterruptedException e) {
                 Log.d("UPLOAD", e.getMessage());
+                return;
             }
         };
         pollingThread = new Thread(responsePoller);
-        pollingThread.start();
+        pollingThread.start();*/
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -200,7 +214,7 @@ public class BirdRecorderActivity extends Activity {
         Log.d(TAG, String.format("Starting recording to file %s", audioFilePath));
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         mRecorder.setAudioChannels(Constants.AUDIO_NUM_CHANNELS);
         mRecorder.setAudioSamplingRate(Constants.AUDIO_SAMPLING_RATE);
         mRecorder.setAudioEncodingBitRate(Constants.AUDIO_BITRATE);
@@ -296,6 +310,10 @@ public class BirdRecorderActivity extends Activity {
                         Log.e("ERROR", exc.getMessage());
                         BirdRecorderActivity.this.state = RecordingState.NOT_RECORDING;
                         stopAnimations();
+
+                        // TODO: backup
+                        Intent intent = new Intent(BirdRecorderActivity.this, ClassificationResultsActivity.class);
+                        startActivity(intent);
                     }
                 } else {
                     Toast.makeText(BirdRecorderActivity.this, "Bad request!", Toast.LENGTH_LONG).show();
@@ -310,6 +328,10 @@ public class BirdRecorderActivity extends Activity {
 
                 BirdRecorderActivity.this.state = RecordingState.NOT_RECORDING;
                 stopAnimations();
+
+                // TODO: backup
+                Intent intent = new Intent(BirdRecorderActivity.this, ClassificationResultsActivity.class);
+                startActivity(intent);
             }
         });
     }

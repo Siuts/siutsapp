@@ -32,7 +32,7 @@ public class ClassifiedBird implements Serializable {
 
     private String confidence;
 
-    public ClassifiedBird() {}
+    /*public ClassifiedBird() {}
 
     public ClassifiedBird(final String slug)
     {
@@ -41,7 +41,7 @@ public class ClassifiedBird implements Serializable {
         this.nameEn = "Great Tit";
         this.nameLa = "Parus Major";
         this.confidence = String.valueOf(Math.round(Math.random()*100));
-    }
+    }*/
 
     public String getSlug() {
         return slug;
