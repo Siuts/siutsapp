@@ -14,10 +14,13 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.siuts.siutsapplication.domain.ClassifiedBird;
 import com.siuts.siutsapplication.domain.Constants;
+import com.siuts.siutsapplication.domain.Endpoints;
 import com.siuts.siutsapplication.domain.RecordingState;
 import com.siuts.siutsapplication.service.ClientGenerator;
 import com.siuts.siutsapplication.service.FileUploadClient;
+import com.siuts.siutsapplication.service.RequestIdPollService;
 import com.skyfishjy.library.RippleBackground;
 import com.vstechlab.easyfonts.EasyFonts;
 
@@ -25,6 +28,7 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +42,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class BirdRecorderActivity extends Activity {
 
@@ -53,6 +58,7 @@ public class BirdRecorderActivity extends Activity {
     private MediaPlayer mPlayer = null;
     private RecordingState state = RecordingState.NOT_RECORDING;
     private String previousRequestId = "";
+    private Thread pollingThread = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +78,9 @@ public class BirdRecorderActivity extends Activity {
         if (state == RecordingState.RECORDING) {
             stopRecording();
         }
+        /*if (pollingThread != null) {
+            pollingThread.interrupt();
+        }*/
         state = RecordingState.NOT_RECORDING;
     }
 
@@ -125,10 +134,38 @@ public class BirdRecorderActivity extends Activity {
         state = RecordingState.PROCESSING;
         recordButtonText.setText("Processing ..");
 
-        // todo
-        Intent intent = new Intent(this, ClassificationResultsActivity.class);
-        startActivity(intent);
+        // just in case we have to quickly fake data
+        //Intent intent = new Intent(this, ClassificationResultsActivity.class);
+        //startActivity(intent);
 
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Endpoints.URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        RequestIdPollService service = retrofit.create(RequestIdPollService.class);
+
+        Runnable responsePoller = () -> {
+            try {
+                for (int retryNumber=0 ; retryNumber<Constants.MAX_POLL_RETRIES ; ++retryNumber) {
+                    Call<ArrayList<ClassifiedBird>> call = service.getClassifiedBirds(previousRequestId);
+                    Response<ArrayList<ClassifiedBird>> response = call.execute();
+                    if (response.code() == 200) {
+                        Log.e("UPLOAD", "SUCCESS!!!");
+                        Intent intent = new Intent(this, ClassificationResultsActivity.class);
+                        intent.putExtra(Constants.INTENT_EXTRA_CLASSIFICATION_RESULTS, response.body());
+                        startActivity(intent);
+                        return;
+                    } else {
+                        Log.e("UPLOAD", "sleeping");
+                        Thread.sleep(Constants.POLL_INTERVAL);
+                    }
+                }
+            } catch (IOException | InterruptedException e) {
+                Log.d("UPLOAD", e.getMessage());
+            }
+        };
+        pollingThread = new Thread(responsePoller);
+        pollingThread.start();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -253,9 +290,6 @@ public class BirdRecorderActivity extends Activity {
                         Log.e("ERROR", exc.getMessage());
                         BirdRecorderActivity.this.state = RecordingState.NOT_RECORDING;
                         stopAnimations();
-
-                        // TODO: delete after demo
-                        enterProcessingState();
                     }
                 } else {
                     Toast.makeText(BirdRecorderActivity.this, "Bad request!", Toast.LENGTH_LONG).show();
@@ -270,9 +304,6 @@ public class BirdRecorderActivity extends Activity {
 
                 BirdRecorderActivity.this.state = RecordingState.NOT_RECORDING;
                 stopAnimations();
-
-                // TODO: delete after demo
-                enterProcessingState();
             }
         });
     }

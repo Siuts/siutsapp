@@ -10,5 +10,7 @@ public class Constants {
     public static final int AUDIO_NUM_CHANNELS = 1;
     public static final int AUDIO_BITRATE = 192 * 1024;
 
-    public static final int RECORDING_LENGTH = 10 * 1000; // in milliseconds
+    public static final int RECORDING_LENGTH = 5 * 1000; // in milliseconds
+    public static final int POLL_INTERVAL = 2 * 1000; // in milliseconds
+    public static final int MAX_POLL_RETRIES = 500;
 }
