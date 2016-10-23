@@ -9,11 +9,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.siuts.siutsapplication.domain.Constants;
-import com.siuts.siutsapplication.service.FileUploadClient;
 import com.siuts.siutsapplication.service.ClientGenerator;
+import com.siuts.siutsapplication.service.FileUploadClient;
 import com.skyfishjy.library.RippleBackground;
+import com.vstechlab.easyfonts.EasyFonts;
 
 import org.apache.commons.io.FileUtils;
 
@@ -40,6 +42,7 @@ public class BirdRecorderActivity extends Activity {
     @BindView(R.id.slowRipple) RippleBackground slowRipple;
     @BindView(R.id.fastRipple) RippleBackground fastRipple;
     @BindView(R.id.recordButton) LoadingView recordButton;
+    @BindView(R.id.recordButtonText) TextView recordButtonText;
 
     private MediaRecorder mRecorder = null;
     private MediaPlayer mPlayer = null;
@@ -52,6 +55,7 @@ public class BirdRecorderActivity extends Activity {
         ButterKnife.bind(this);
         checkPermissions();
         setupRecordButtonAnimation();
+        recordButtonText.setTypeface(EasyFonts.robotoThin(this));
 
         slowRipple.startRippleAnimation();
     }
@@ -64,6 +68,7 @@ public class BirdRecorderActivity extends Activity {
             recordButton.startAnimation();
 
             isRecordingNow = true;
+            recordButtonText.setText("Listening to a bird...");
             startRecording();
         } else {
             stopRecording();
