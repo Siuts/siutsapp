@@ -1,5 +1,6 @@
 package com.siuts.siutsapplication;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,7 +17,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ClassificationResultsActivity extends AppCompatActivity {
+public class ClassificationResultsActivity extends Activity {
 
     @BindView(R.id.birdListView) ListView listView;
     ClassificationResultsAdapter adapter;
@@ -29,7 +30,7 @@ public class ClassificationResultsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         List<ClassifiedBird> birds = null;
-        if (intent == null) {
+        if (intent == null || !intent.hasExtra(Constants.INTENT_EXTRA_CLASSIFICATION_RESULTS)) {
             birds = getDemoResults();
         } else {
             birds = getBirdsFromIntent(intent);

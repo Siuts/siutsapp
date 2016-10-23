@@ -2,6 +2,7 @@ package com.siuts.siutsapplication;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -36,6 +37,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class BirdRecorderActivity extends Activity {
 
@@ -49,7 +51,8 @@ public class BirdRecorderActivity extends Activity {
 
     private MediaRecorder mRecorder = null;
     private MediaPlayer mPlayer = null;
-    RecordingState state = RecordingState.NOT_RECORDING;
+    private RecordingState state = RecordingState.NOT_RECORDING;
+    private String previousRequestId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,7 @@ public class BirdRecorderActivity extends Activity {
 
     @Override
     protected void onStop() {
+        super.onStop();
         if (state == RecordingState.RECORDING) {
             stopRecording();
         }
@@ -115,6 +119,16 @@ public class BirdRecorderActivity extends Activity {
             stopAnimations();
             Toast.makeText(this, "Recording failed! :(", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void enterProcessingState() {
+        state = RecordingState.PROCESSING;
+        recordButtonText.setText("Processing ..");
+
+        // todo
+        Intent intent = new Intent(this, ClassificationResultsActivity.class);
+        startActivity(intent);
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -233,8 +247,15 @@ public class BirdRecorderActivity extends Activity {
                     try {
                         String responseString = response.body().string();
                         Log.v("UPLOAD", responseString);
+                        previousRequestId = responseString;
+                        enterProcessingState();
                     } catch (IOException exc) {
                         Log.e("ERROR", exc.getMessage());
+                        BirdRecorderActivity.this.state = RecordingState.NOT_RECORDING;
+                        stopAnimations();
+
+                        // TODO: delete after demo
+                        enterProcessingState();
                     }
                 } else {
                     Toast.makeText(BirdRecorderActivity.this, "Bad request!", Toast.LENGTH_LONG).show();
@@ -249,6 +270,9 @@ public class BirdRecorderActivity extends Activity {
 
                 BirdRecorderActivity.this.state = RecordingState.NOT_RECORDING;
                 stopAnimations();
+
+                // TODO: delete after demo
+                enterProcessingState();
             }
         });
     }
